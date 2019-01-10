@@ -1,10 +1,9 @@
 import * as d3 from 'd3v4';
-import graph from './graph';
 import getSvg from './shared/getSvg';
 import getSimulation from './shared/getSimulation';
 import drawNodes from './shared/drawNodes';
 
-export default () => {
+const draw = (graph) => {
   const svg = getSvg();
   const simulation = getSimulation();
   const color = d3.scaleOrdinal(d3.schemeCategory20);
@@ -25,4 +24,17 @@ export default () => {
 
   simulation.force('link')
     .links(graph.links);
+};
+
+export default () => {
+
+  d3.request('/graph.json')
+    .response(function (xhr) {
+      return JSON.parse(xhr.responseText);
+    })
+    .get(function (error, res) {
+      if (error) alert('出错啦');
+
+      draw(res);
+    });
 };
