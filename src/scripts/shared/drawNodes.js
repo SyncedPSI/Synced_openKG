@@ -7,7 +7,11 @@ export default (svg, simulation, nodes, link = null) => {
     .data(nodes)
     .enter()
     .append('circle')
-    .attr('r', 40)
+    .attr('r', function() {
+      // if (d.id === main.id) return 50;
+      return 40;
+      // return parseInt(40 * Math.random(), 10);
+    })
     .attr('fill', function (d) {
       return color(d.group);
     })
