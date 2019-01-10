@@ -5,14 +5,15 @@ html, body, .draw-container {
 
 body {
   background-color: #0e0e0f;
-  background-image: url(/images/bg.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
   padding: 0;
   margin: 0;
   overflow: hidden;
   position: relative;
+
+  &.t-has-bg {
+    background: #0e0e0f url(/images/bg.png) no-repeat center center;
+    background-size: cover;
+  }
 }
 
 * {
