@@ -1,5 +1,7 @@
-extends layout.pug
+extends ./views/layout.pug
 block variables
   - var action = 'index'
 block content
-  svg.draw-container
+  include ./views/sidebar.pug
+  .logo
+    image(src="./images/logo.png" width="50%")

@@ -9,7 +9,7 @@ export default () => {
       return d.id;
     }))
     .force('charge', d3.forceManyBody())
-    .force('collide', d3.forceCollide(60))
+    .force('collide', d3.forceCollide(50))
     .force('center', d3.forceCenter(width / 2, height / 2));
 
   return simulation;

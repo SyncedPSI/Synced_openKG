@@ -3,7 +3,7 @@ import getSvg from './shared/getSvg';
 import getSimulation from './shared/getSimulation';
 import drawNodes from './shared/drawNodes';
 
-const draw = (graph) => {
+const draw = (nodes, links) => {
   const svg = getSvg();
   const simulation = getSimulation();
   const color = d3.scaleOrdinal(d3.schemeCategory20);
@@ -12,7 +12,7 @@ const draw = (graph) => {
   const link = svg.append('g')
     .attr('class', 'link')
     .selectAll('line')
-    .data(graph.links)
+    .data(links)
     .enter().append('line')
     .attr('stroke-width', function (d) {
       return Math.sqrt(d.value);
@@ -20,10 +20,10 @@ const draw = (graph) => {
     .attr('stroke', function (d) {
       return color(d.value);
     });
-  drawNodes(svg, simulation, graph.nodes, link);
+  drawNodes(svg, simulation, nodes, link);
 
   simulation.force('link')
-    .links(graph.links);
+    .links(links);
 };
 
 export default () => {
@@ -35,6 +35,7 @@ export default () => {
     .get(function (error, res) {
       if (error) alert('出错啦');
 
-      draw(res);
+      const { links, nodes } = res;
+      draw(nodes, links);
     });
 };

@@ -9,7 +9,7 @@ export default (svg, simulation, nodes, link = null) => {
     .append('circle')
     .attr('r', function() {
       // if (d.id === main.id) return 50;
-      return 40;
+      return 30;
       // return parseInt(40 * Math.random(), 10);
     })
     .attr('fill', function (d) {

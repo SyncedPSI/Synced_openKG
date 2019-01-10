@@ -1,5 +1,8 @@
-extends layout.pug
+extends ./views/layout.pug
 block variables
   - var action = 'search'
 block content
+  include ./views/sidebar.pug
+  block sidebar_content
+    .sidebar-items#js-sidebar-item
   svg.draw-container
