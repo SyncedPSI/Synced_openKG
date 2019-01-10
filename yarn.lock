@@ -7364,6 +7364,11 @@ tempfile@^2.0.0:
     temp-dir "^1.0.0"
     uuid "^3.0.1"
 
+three@^0.100.0:
+  version "0.100.0"
+  resolved "http://registry.npm.taobao.org/three/download/three-0.100.0.tgz#262841c0b7d88ebd62af73f28d9f578963b3aa00"
+  integrity sha1-JihBwLfYjr1ir3PyjZ9XiWOzqgA=
+
 through2-concurrent@^1.1.0:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/through2-concurrent/download/through2-concurrent-1.1.1.tgz#11cb4ea4c9e31bca6e4c1e6dba48d1c728c3524b"

@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "d3v4": "^4.2.2",
-    "normalize.css": "^7.0.0"
+    "normalize.css": "^7.0.0",
+    "three": "^0.100.0"
   }
 }
