@@ -29,7 +29,7 @@ export default () => {
       const nodes = res.nodes.slice(0, 20);
       let html = '';
       nodes.forEach((item) => {
-        html += `<a class="sidebar--item" href='/show.html?id=${item.id}'>${item.id}</a>`;
+        html += `<a class="sidebar--item" href='/show.html?id=${item.id}&keyword=${keyword}'>${item.id}</a>`;
       });
 
       document.getElementById('js-sidebar-item').innerHTML = html;

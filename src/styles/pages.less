@@ -16,29 +16,43 @@
     display: block;
     padding: 8px 10px;
     color: #fff;
-    text-decoration: none;
 
     &:hover {
       background-color: #414141;
     }
+  }
+
+  &--home {
+    background-color: #333333;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: 14px;
+    border-radius: 4px;
   }
 }
 .search {
   border-radius: 4px;
   background-color: #333333;
   color: #fff;
+  display: flex;
+  align-items: center;
+
+  &--left, &--input {
+    width: 250px;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px;
+  }
 
   &--input {
-    color: #fff;
     outline: none;
-    padding: 10px;
-    font-size: 14px;
     background-color: transparent;
     border: none;
-    min-width: 250px;
   }
 
   &--icon {
+    color: #fff;
     padding: 10px;
     cursor: pointer;
   }
