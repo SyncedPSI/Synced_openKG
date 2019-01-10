@@ -3,10 +3,9 @@ import getSvg from './shared/getSvg';
 import getSimulation from './shared/getSimulation';
 import drawNodes from './shared/drawNodes';import getUrlParams from './shared/url';
 
-const draw = (nodes, links) => {
+const draw = (nodes, links, keyword) => {
   const svg = getSvg();
   const simulation = getSimulation();
-  const color = d3.scaleOrdinal(d3.schemeCategory20);
 
   // draw
   const link = svg.append('g')
@@ -17,10 +16,8 @@ const draw = (nodes, links) => {
     .attr('stroke-width', function (d) {
       return Math.sqrt(d.value);
     })
-    .attr('stroke', function (d) {
-      return color(d.value);
-    });
-  drawNodes(svg, simulation, nodes, link);
+    .attr('stroke', '#fff');
+  drawNodes({ svg, simulation, nodes, link, keyword });
 
   simulation.force('link')
     .links(links);
@@ -44,6 +41,6 @@ export default () => {
       const nodeTitleEle = document.getElementById('js-node-id');
       nodeTitleEle.innerHTML = '主题的名字';
 
-      draw(nodes, links);
+      draw(nodes, links, keyword);
     });
 };

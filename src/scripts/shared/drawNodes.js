@@ -1,6 +1,6 @@
 import * as d3 from 'd3v4';
-export default (svg, simulation, nodes, link = null) => {
-  const color = d3.scaleOrdinal(d3.schemeCategory20);
+export default ( { svg, simulation, nodes, link = null, keyword}) => {
+  const color = d3.scaleOrdinal(['#9db88a', '#a888b3', '#7f90cf', '#c47074', '#c1bdd4', '#92afd9', '#d3c6a4', '#c38990']);
   const node = svg.append('g')
     .attr('class', 'node')
     .selectAll('circle')
@@ -18,7 +18,8 @@ export default (svg, simulation, nodes, link = null) => {
     .attr('pointer-events', 'all')
     .on('click', function (d) {
       if (d3.event.defaultPrevented) return;
-      alert(d.id);
+
+      window.location.href = `/show.html?id=${d.id}&keyword=${keyword}`;
     })
     .call(d3.drag()
       .on('start', dragstarted)

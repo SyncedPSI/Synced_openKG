@@ -5,18 +5,20 @@ import drawNodes from './shared/drawNodes';
 import input from './shared/input';
 import getUrlParams from './shared/url';
 
-const draw = (nodes) => {
+const draw = (nodes, keyword) => {
   const svg = getSvg();
   const simulation = getSimulation();
 
   // draw
-  drawNodes(svg, simulation, nodes);
+  drawNodes({svg, simulation, nodes, keyword});
 };
 
 export default () => {
   input();
   const { keyword } = getUrlParams();
-  document.getElementById('js-input').setAttribute('value', keyword);
+  if (keyword) {
+    document.getElementById('js-input').setAttribute('value', keyword);
+  }
 
   d3.request('/graph.json')
     .response(function (xhr) {
@@ -33,6 +35,6 @@ export default () => {
       });
 
       document.getElementById('js-sidebar-item').innerHTML = html;
-      draw(nodes);
+      draw(nodes, keyword);
     });
 };
