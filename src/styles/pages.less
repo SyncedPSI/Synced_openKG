@@ -70,7 +70,12 @@
     padding: 10px;
     cursor: pointer;
     display: inline-block;
+    transition: opacity .28s;
 
+    &.t-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
   }
 }
 
