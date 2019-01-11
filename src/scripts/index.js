@@ -4,47 +4,53 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
-  SphereGeometry,
+  SphereBufferGeometry,
   MeshBasicMaterial,
   Mesh,
   Color,
   Vector3,
-  Math as threeMath
 } from 'three';
 
 
 export default () => {
   input();
 
-
   let camera, scene, renderer, stars = [];
-  let longitude = 0;
-  let latitude = 0;
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  let cameraAmpl = { x: 2, y: 3};
+  let cameraVelocity = 0.05;
+  let mousePosition = { x: 0, y: 0 };
+  const normalizedOrientation = new Vector3();
+  const lookAt = new Vector3();
+
   document.addEventListener('mousemove', onDocumentMouseMove, false);
 
   function init() {
-    camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.target = new Vector3(0, 0, 0);
-    camera.position.x = 5;
-    camera.position.z = 5;
+    camera = new PerspectiveCamera(50, screenWidth / screenHeight, 1, 1000);
+    camera.position.set(0, 0, 10);
     scene = new Scene();
     scene.background = new Color(0x0e0e0f);
     renderer = new WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(screenWidth, screenHeight);
+    const devicePixelRatio = window.devicePixelRatio ? Math.min(1.6, window.devicePixelRatio) : 1;
+    renderer.setPixelRatio(devicePixelRatio);
     document.body.appendChild(renderer.domElement);
   }
 
   function addSphere() {
-    for (let z = -1000; z < 1000; z += 10) {
-      let geometry = new SphereGeometry(0.5, 32, 32);
+    for (let i = 0; i < 300; i++) {
+      let geometry = new SphereBufferGeometry(.6, 2, 2);;
       let material = new MeshBasicMaterial({
-        color: 0xffffff
+        color: 0x4F4F4F
       });
       let sphere = new Mesh(geometry, material);
-      sphere.position.x = Math.random() * 1000 - 500;
-      sphere.position.y = Math.random() * 1000 - 500;
-      sphere.position.z = z;
-      sphere.scale.x = sphere.scale.y = 2;
+      sphere.position.set(
+        Math.random() - 0.5,
+        Math.random() - 0.5,
+        -Math.random() * 0.5
+      ).normalize().multiplyScalar(getRandomFloat(100, 300));
+
       scene.add(sphere);
       stars.push(sphere);
     }
@@ -52,18 +58,26 @@ export default () => {
 
   function render() {
     requestAnimationFrame(render);
-    latitude = Math.max(-30, Math.min(30, latitude));
-    camera.target.x = 2 * Math.sin(threeMath.degToRad(90 - latitude)) * Math.cos(threeMath.degToRad(longitude));
-    camera.target.y = 2 * Math.cos(threeMath.degToRad(90 - latitude));
-    camera.target.z = 2 * Math.sin(threeMath.degToRad(90 - latitude)) * Math.sin(threeMath.degToRad(longitude));
-    camera.lookAt(camera.target);
+    camera.position.x += (normalizedOrientation.x - camera.position.x) * cameraVelocity;
+    camera.position.y += (normalizedOrientation.y - camera.position.y) * cameraVelocity;
+    camera.lookAt(lookAt);
     renderer.render(scene, camera);
   }
 
   function onDocumentMouseMove(event) {
-    longitude = (event.clientX) * 0.1;
-    latitude = (-event.clientY) * 0.1;
+    mousePosition.x = event.clientX;
+    mousePosition.y = event.clientY;
+
+    normalizedOrientation.set(
+      -((mousePosition.x / screenWidth) - 0.5) * cameraAmpl.x,
+      ((mousePosition.y / screenHeight) - 0.5) * cameraAmpl.y,
+      0.5,
+    );
   }
+
+  function getRandomFloat (min, max) {
+    return (Math.random() * (max - min)) + min
+  };
 
   init();
   addSphere();
