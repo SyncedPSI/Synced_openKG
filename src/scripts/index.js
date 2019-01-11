@@ -7,7 +7,9 @@ import {
   SphereGeometry,
   MeshBasicMaterial,
   Mesh,
-  Color
+  Color,
+  Vector3,
+  Math as threeMath
 } from 'three';
 
 
@@ -15,10 +17,15 @@ export default () => {
   input();
 
 
-  var camera, scene, renderer, stars = [];
+  let camera, scene, renderer, stars = [];
+  let longitude = 0;
+  let latitude = 0;
+  document.addEventListener('mousemove', onDocumentMouseMove, false);
 
   function init() {
     camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.target = new Vector3(0, 0, 0);
+    camera.position.x = 5;
     camera.position.z = 5;
     scene = new Scene();
     scene.background = new Color(0x0e0e0f);
@@ -28,12 +35,12 @@ export default () => {
   }
 
   function addSphere() {
-    for (var z = -1000; z < 1000; z += 20) {
-      var geometry = new SphereGeometry(0.5, 32, 32);
-      var material = new MeshBasicMaterial({
+    for (let z = -1000; z < 1000; z += 10) {
+      let geometry = new SphereGeometry(0.5, 32, 32);
+      let material = new MeshBasicMaterial({
         color: 0xffffff
       });
-      var sphere = new Mesh(geometry, material);
+      let sphere = new Mesh(geometry, material);
       sphere.position.x = Math.random() * 1000 - 500;
       sphere.position.y = Math.random() * 1000 - 500;
       sphere.position.z = z;
@@ -43,19 +50,19 @@ export default () => {
     }
   }
 
-  function animateStars() {
-    for (var i = 0; i < stars.length; i++) {
-      let star = stars[i];
-      star.position.z += i / 10;
-      if (star.position.z > 1000) star.position.z -= 2000;
-
-    }
-  }
-
   function render() {
     requestAnimationFrame(render);
+    latitude = Math.max(-30, Math.min(30, latitude));
+    camera.target.x = 2 * Math.sin(threeMath.degToRad(90 - latitude)) * Math.cos(threeMath.degToRad(longitude));
+    camera.target.y = 2 * Math.cos(threeMath.degToRad(90 - latitude));
+    camera.target.z = 2 * Math.sin(threeMath.degToRad(90 - latitude)) * Math.sin(threeMath.degToRad(longitude));
+    camera.lookAt(camera.target);
     renderer.render(scene, camera);
-    animateStars();
+  }
+
+  function onDocumentMouseMove(event) {
+    longitude = (event.clientX) * 0.1;
+    latitude = (-event.clientY) * 0.1;
   }
 
   init();
