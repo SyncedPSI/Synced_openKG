@@ -12,8 +12,8 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
       return 30;
       // return parseInt(40 * Math.random(), 10);
     })
-    .attr('fill', function (d) {
-      return color(d.group);
+    .attr('fill', function (_, index) {
+      return color(index % 8);
     })
     .attr('pointer-events', 'all')
     .on('click', function (d) {
@@ -34,7 +34,7 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
     .attr('dy', 2)
     .attr('text-anchor', 'middle')
     .text(function (d) {
-      return d.id;
+      return d.name;
     })
     .attr('fill', 'white');
 

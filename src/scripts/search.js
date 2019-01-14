@@ -1,9 +1,9 @@
-import * as d3 from 'd3v4';
 import getSvg from './shared/getSvg';
 import getSimulation from './shared/getSimulation';
 import drawNodes from './shared/drawNodes';
 import input from './shared/input';
 import getUrlParams from './shared/url';
+import { searchByKeyword } from './shared/api';
 
 const draw = (nodes, keyword) => {
   const svg = getSvg();
@@ -15,26 +15,25 @@ const draw = (nodes, keyword) => {
 
 export default () => {
   input();
-  const { keyword } = getUrlParams();
-  if (keyword) {
-    document.getElementById('js-input').setAttribute('value', keyword);
+  let { keyword } = getUrlParams();
+  if (!keyword) {
+    document.getElementById('js-sidebar-item').innerHTML = '<span class="sidebar--item">请输入关键字</span>';
+    return;
   }
 
-  d3.request('/graph.json')
-    .response(function (xhr) {
-      return JSON.parse(xhr.responseText);
-    })
+  keyword = decodeURI(keyword);
+  document.getElementById('js-input').setAttribute('value', keyword);
+
+  searchByKeyword(keyword)
     .get(function (error, res) {
       if (error) alert('出错啦');
 
-      // only show first 20 nodes
-      const nodes = res.nodes.slice(0, 20);
       let html = '';
-      nodes.forEach((item) => {
-        html += `<a class="sidebar--item" href='/show.html?id=${item.id}&keyword=${keyword}'>${item.id}</a>`;
+      res.forEach((item) => {
+        html += `<a class="sidebar--item" href='/show.html?id=${item.id}&keyword=${keyword}'>${item.name}</a>`;
       });
 
       document.getElementById('js-sidebar-item').innerHTML = html;
-      draw(nodes, keyword);
+      draw(res, keyword);
     });
 };

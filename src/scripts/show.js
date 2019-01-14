@@ -1,7 +1,8 @@
-import * as d3 from 'd3v4';
 import getSvg from './shared/getSvg';
 import getSimulation from './shared/getSimulation';
-import drawNodes from './shared/drawNodes';import getUrlParams from './shared/url';
+import drawNodes from './shared/drawNodes';
+import getUrlParams from './shared/url';
+import { getNodeDetail } from './shared/api';
 
 const draw = (nodes, links, keyword) => {
   const svg = getSvg();
@@ -30,10 +31,7 @@ export default () => {
     window.location.href = `/search.html?keyword=${keyword}`;
   });
 
-  d3.request(`/graph.json?id=${id}`)
-    .response(function (xhr) {
-      return JSON.parse(xhr.responseText);
-    })
+  getNodeDetail(id)
     .get(function (error, res) {
       if (error) alert('出错啦');
 
