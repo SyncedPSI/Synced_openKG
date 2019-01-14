@@ -35,9 +35,9 @@ export default () => {
     .get(function (error, res) {
       if (error) alert('出错啦');
 
-      const { links, nodes } = res;
-      const nodeTitleEle = document.getElementById('js-node-id');
-      nodeTitleEle.innerHTML = '主题的名字';
+      const { links, nodes, desc, name } = res;
+      document.getElementById('js-node-id').innerHTML = name;
+      document.getElementById('js-node-desc').innerHTML = desc || '暂无描述';
 
       draw(nodes, links, keyword);
     });
