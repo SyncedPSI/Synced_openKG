@@ -9,7 +9,7 @@ export default () => {
     .on('zoom', zoom));
 
   function zoom() {
-    d3.selectAll('g').attr('transform', d3.event.transform);
+    d3.selectAll('.container').attr('transform', d3.event.transform);
   }
 
   return svg;

@@ -10,12 +10,12 @@ const draw = (nodes, links, keyword) => {
 
   // draw
   const link = svg.append('g')
-    .attr('class', 'link')
+    .attr('class', 'container')
     .selectAll('line')
     .data(links)
     .enter().append('line')
     .attr('stroke-width', function (d) {
-      return Math.sqrt(d.value);
+      return 1;
     })
     .attr('stroke', '#fff');
   drawNodes({ svg, simulation, nodes, link, keyword });

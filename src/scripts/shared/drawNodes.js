@@ -2,12 +2,14 @@ import * as d3 from 'd3v4';
 export default ( { svg, simulation, nodes, link = null, keyword}) => {
   const color = d3.scaleOrdinal(['#9db88a', '#a888b3', '#7f90cf', '#c47074', '#c1bdd4', '#92afd9', '#d3c6a4', '#c38990']);
   const node = svg.append('g')
-    .attr('class', 'node')
-    .selectAll('circle')
+    .attr('class', 'container')
+    .selectAll('node')
     .data(nodes)
     .enter()
-    .append('circle')
-    .attr('r', function() {
+    .append('g');
+
+  node.append('circle')
+    .attr('r', function () {
       // if (d.id === main.id) return 50;
       return 30;
       // return parseInt(40 * Math.random(), 10);
@@ -18,7 +20,6 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
     .attr('pointer-events', 'all')
     .on('click', function (d) {
       if (d3.event.defaultPrevented) return;
-
       window.location.href = `/show.html?id=${d.id}&keyword=${keyword}`;
     })
     .call(d3.drag()
@@ -26,11 +27,7 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
       .on('drag', dragged)
       .on('end', dragended));
 
-  const text = svg.append('g')
-    .attr('class', 'labels')
-    .selectAll('text')
-    .data(nodes)
-    .enter().append('text')
+  node.append('text')
     .attr('dy', 2)
     .attr('text-anchor', 'middle')
     .text(function (d) {
@@ -75,19 +72,8 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
           return d.target.y;
         });
     }
-    node
-      .attr('cx', function (d) {
-        return d.x;
-      })
-      .attr('cy', function (d) {
-        return d.y;
-      });
-    text
-      .attr('x', function (d) {
-        return d.x;
-      })
-      .attr('y', function (d) {
-        return d.y;
-      });
+    node.attr('transform', function (d) {
+      return 'translate(' + [d.x, d.y] + ')';
+    });
   }
 };
