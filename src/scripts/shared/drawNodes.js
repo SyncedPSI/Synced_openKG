@@ -1,4 +1,5 @@
 import * as d3 from 'd3v4';
+
 export default ( { svg, simulation, nodes, link = null, keyword}) => {
   const color = d3.scaleOrdinal(['#9db88a', '#a888b3', '#7f90cf', '#c47074', '#c1bdd4', '#92afd9', '#d3c6a4', '#c38990']);
   const node = svg.append('g')
@@ -27,13 +28,38 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
       .on('drag', dragged)
       .on('end', dragended));
 
-  node.append('text')
-    .attr('dy', 2)
-    .attr('text-anchor', 'middle')
-    .text(function (d) {
-      return d.name;
-    })
-    .attr('fill', 'white');
+  node.each(function(item) {
+    const currentText = d3.select(this);
+    const words = item.name.split(' ').reverse();
+    let word = '';
+    let line = [];
+    let lineNumber = 0;
+    let lineHeight = 1;
+    let text = currentText.append('text').attr('text-anchor', 'middle').attr('fill', 'white').attr('font-size', 12).attr('dy', 0);
+    while (word = words.pop()) {
+      line.push(word);
+      text.text(line.join(' '));
+      if (text.node().getComputedTextLength() > 60) {
+        if (lineNumber >= 2) {
+          return;
+        }
+        line.pop();
+        text.text(line.join(' '));
+        if (line.length === 0) lineNumber--;
+        line = [word];
+        text = currentText.append('text').attr('text-anchor', 'middle').attr('fill', 'white').attr('font-size', 12).attr('dy', ++lineNumber * lineHeight + 'em').text(word);
+      }
+    }
+  });
+
+  // node.append('text')
+  //   .attr('dy', 2)
+  //   .attr('text-anchor', 'middle')
+  //   .text(function (d) {
+  //     return d.name;
+  //   })
+  //   .attr('fill', 'white')
+  //   .call(wrap, 60);
 
   simulation
     .nodes(nodes)
