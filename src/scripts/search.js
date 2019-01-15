@@ -28,6 +28,11 @@ export default () => {
     .get(function (error, res) {
       if (error) alert('出错啦');
 
+      if (res.length === 0) {
+        document.getElementById('js-sidebar-item').innerHTML = '<div class="sidebar--loading">未找到相关数据</div>';
+        return;
+      }
+
       let html = '';
       res.forEach((item) => {
         html += `<a class="sidebar--item" href='/show.html?id=${item.id}&keyword=${keyword}'>${item.name}</a>`;
