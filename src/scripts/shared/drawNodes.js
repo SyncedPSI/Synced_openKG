@@ -1,7 +1,16 @@
 import * as d3 from 'd3v4';
 
 export default ( { svg, simulation, nodes, link = null, keyword}) => {
-  const color = d3.scaleOrdinal(['#9db88a', '#a888b3', '#7f90cf', '#c47074', '#c1bdd4', '#92afd9', '#d3c6a4', '#c38990']);
+  const labelColor = {
+    'Technology': '#9db88a',
+    'Expert' : '#a888b3',
+    'Venue' : '#7f90cf',
+    'Institution': '#c47074',
+    'Paper' : '#c1bdd4',
+    'Solution' : '#92afd9',
+    'Resource' : '#d3c6a4',
+    'BusinessCase' : '#c38990',
+  };
   const node = svg.append('g')
     .attr('class', 'container')
     .selectAll('node')
@@ -15,13 +24,15 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
       return 30;
       // return parseInt(40 * Math.random(), 10);
     })
-    .attr('fill', function (_, index) {
-      return color(index % 8);
+    .attr('fill', function (d) {
+      const type = d.lable || d.data.label;
+      return labelColor[type];
     })
     .attr('pointer-events', 'all')
     .on('click', function (d) {
       if (d3.event.defaultPrevented) return;
-      window.location.href = `/show.html?id=${d.id}&keyword=${keyword}`;
+      const id = d.id || d.data.id;
+      window.location.href = `/show.html?id=${id}&keyword=${keyword}`;
     })
     .call(d3.drag()
       .on('start', dragstarted)
@@ -30,7 +41,8 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
 
   node.each(function(item) {
     const currentText = d3.select(this);
-    const words = item.name.split(' ').reverse();
+    const name = item.name || item.data.name;
+    const words = name.split(' ').reverse();
     let word = '';
     let line = [];
     let lineNumber = 0;
