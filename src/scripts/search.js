@@ -22,7 +22,9 @@ export default () => {
   }
 
   keyword = decodeURI(keyword);
+  document.title = `搜索「${keyword}」| KG4AI`;
   document.getElementById('js-input').setAttribute('value', keyword);
+
 
   searchByKeyword(keyword)
     .get(function (error, res) {

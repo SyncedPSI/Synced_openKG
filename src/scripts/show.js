@@ -51,6 +51,7 @@ export default () => {
       if (error) alert('出错啦');
 
       const { children, desc, name } = res;
+      document.title = `${name} | KG4AI`;
       document.getElementById('js-node-id').innerHTML = name;
       document.getElementById('js-node-desc').innerHTML = desc || '暂无描述';
       const root = d3.hierarchy(res);
