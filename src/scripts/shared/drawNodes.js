@@ -11,6 +11,13 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
     'Resource' : '#d3c6a4',
     'BusinessCase' : '#c38990',
   };
+
+  const circleRadius = {
+    0: 60,
+    1: 30,
+    2: 20
+  };
+
   const node = svg.append('g')
     .attr('class', 'container')
     .selectAll('node')
@@ -19,13 +26,11 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
     .append('g');
 
   node.append('circle')
-    .attr('r', function () {
-      // if (d.id === main.id) return 50;
-      return 30;
-      // return parseInt(40 * Math.random(), 10);
+    .attr('r', function (d) {
+      return circleRadius[d.depth];
     })
     .attr('fill', function (d) {
-      const type = d.lable || d.data.label;
+      const type = d.label || d.data.label;
       return labelColor[type];
     })
     .attr('pointer-events', 'all')
