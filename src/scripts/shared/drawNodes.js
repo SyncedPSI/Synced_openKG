@@ -27,10 +27,12 @@ export default ( { svg, simulation, nodes, link = null, keyword}) => {
 
   node.append('circle')
     .attr('r', function (d) {
-      return circleRadius[d.depth];
+      const radius = circleRadius[d.depth];
+      return (radius || 30);
     })
     .attr('fill', function (d) {
       const type = d.label || d.data.label;
+
       return labelColor[type];
     })
     .attr('pointer-events', 'all')
