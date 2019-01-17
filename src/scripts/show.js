@@ -46,12 +46,16 @@ export default () => {
     window.location.href = `/search.html?keyword=${keyword}`;
   });
 
+
   getNodeDetail(id)
     .get(function (error, res) {
       if (error) alert('出错啦');
 
-      const { children, summary, name } = res;
+      const { summary, name } = res;
       document.title = `${name} | KG4AI`;
+      document.getElementById('js-go-search').addEventListener('click', () => {
+        window.location.href = `/search.html?keyword=${name}`;
+      });
       document.getElementById('js-node-id').innerHTML = name;
       document.getElementById('js-node-desc').innerHTML = summary || '暂无描述';
       const root = d3.hierarchy(res);
