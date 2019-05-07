@@ -1,7 +1,7 @@
 import { request } from 'd3v4';
 
 export const getNodeDetail = (id) => {
-  return request(`http://localhost:3000/api/v1/nodes/${id}`)
+  return request(`http://localhost:3000/api/v2/nodes/${id}`)
     .response(function (xhr) {
       return JSON.parse(xhr.responseText);
     });

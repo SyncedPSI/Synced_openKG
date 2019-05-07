@@ -8,9 +8,8 @@ export default () => {
     .force('link', d3.forceLink().id(function (d) {
       return d.id;
     }))
-    .force('charge', d3.forceManyBody())
+    .force('charge', d3.forceManyBody().strength(-100).theta(0.01).distanceMax(150).distanceMin(150))
     .force('collide', d3.forceCollide(60))
     .force('center', d3.forceCenter(width / 2, height / 2));
-
   return simulation;
 };

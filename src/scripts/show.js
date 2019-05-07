@@ -30,9 +30,11 @@ const draw = (nodes, links, keyword) => {
     })
     .enter().append('line')
     .attr('stroke-width', function (d) {
-      return d.target.depth;
+      //return d.target.depth;
+      return 2;
     })
-    .attr('stroke', '#fff');
+    .attr('stroke', '#fff')
+    .attr('stroke-opacity', '0.4');
   drawNodes({ svg, simulation, nodes, link, keyword });
 
   simulation.force('link')
@@ -50,14 +52,13 @@ export default () => {
     .get(function (error, res) {
       if (error) alert('出错啦');
 
-      const { children, summary, name } = res;
+      const { children, summary, name, nodes, links } = res;
       document.title = `${name} | KG4AI`;
       document.getElementById('js-node-id').innerHTML = name;
       document.getElementById('js-node-desc').innerHTML = summary || '暂无描述';
-      const root = d3.hierarchy(res);
-      const nodes = flatten(root);
-      const links = root.links();
-
+      //const root = d3.hierarchy(res);
+      //const nodes = flatten(root);
+      //const links = root.links();
       draw(nodes, links, keyword);
     });
 };
