@@ -1,9 +1,9 @@
-import * as d3 from 'd3v4';
-import getSvg from './shared/getSvg';
-import getSimulation from './shared/getSimulation';
-import drawNodes from './shared/drawNodes';
-import getUrlParams from './shared/url';
-import { getNodeDetail } from './shared/api';
+import * as d3 from "d3v4";
+import getSvg from "./shared/getSvg";
+import getSimulation from "./shared/getSimulation";
+import drawNodes from "./shared/drawNodes";
+import getUrlParams from "./shared/url";
+import { getNodeDetail } from "./shared/api";
 
 function flatten(root) {
   // hierarchical data to flat data for force layout
@@ -22,43 +22,46 @@ const draw = (nodes, links, keyword) => {
   const simulation = getSimulation();
 
   // draw
-  const link = svg.append('g')
-    .attr('class', 'container')
-    .selectAll('line')
+  const link = svg
+    .append("g")
+    .attr("class", "container")
+    .selectAll("line")
     .data(links, function(d) {
       return d.target.id;
     })
-    .enter().append('line')
-    .attr('stroke-width', function (d) {
+    .enter()
+    .append("line")
+    .attr("stroke-width", function(d) {
       //return d.target.depth;
       return 2;
     })
-    .attr('stroke', '#fff')
-    .attr('stroke-opacity', '0.4');
+    .attr("stroke", "#fff")
+    .attr("stroke-opacity", "0.4");
   drawNodes({ svg, simulation, nodes, link, keyword });
 
-  simulation.force('link')
-    .links(links);
+  simulation.force("link").links(links);
 };
 
 export default () => {
   const { keyword, id } = getUrlParams();
 
-  document.getElementById('js-go-prev').addEventListener('click', () => {
+  document.getElementById("js-go-prev").addEventListener("click", () => {
     window.location.href = `/search.html?keyword=${keyword}`;
   });
 
-  getNodeDetail(id)
-    .get(function (error, res) {
-      if (error) alert('出错啦');
+  getNodeDetail(id).get(function(error, res) {
+    if (error) alert("出错啦");
 
-      const { children, summary, name, nodes, links } = res;
-      document.title = `${name} | KG4AI`;
-      document.getElementById('js-node-id').innerHTML = name;
-      document.getElementById('js-node-desc').innerHTML = summary || '暂无描述';
-      //const root = d3.hierarchy(res);
-      //const nodes = flatten(root);
-      //const links = root.links();
-      draw(nodes, links, keyword);
+    const { children, summary, name, nodes, links } = res;
+    document.title = `${name} | KG4AI`;
+    document.getElementById("js-go-search").addEventListener("click", () => {
+      window.location.href = `/search.html?keyword=${name}`;
     });
+    document.getElementById("js-node-id").innerHTML = name;
+    document.getElementById("js-node-desc").innerHTML = summary || "暂无描述";
+    //const root = d3.hierarchy(res);
+    //const nodes = flatten(root);
+    //const links = root.links();
+    draw(nodes, links, keyword);
+  });
 };
